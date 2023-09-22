@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import {ERC1155} from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import {ERC1155Supply} from "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
+// import {ERC1155Supply} from "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import {IERC2981} from "@openzeppelin/contracts/interfaces/IERC2981.sol";
 import {IERC1271} from "@openzeppelin/contracts/interfaces/IERC1271.sol";
 import {IERC165} from "@openzeppelin/contracts/interfaces/IERC165.sol";
@@ -14,13 +14,7 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import {IFriendtechShares} from "./IFriendtechShares.sol";
 
-contract WrappedFT is
-    ERC1155Supply,
-    IERC2981,
-    IERC1271,
-    Ownable,
-    ReentrancyGuard
-{
+contract WrappedFT is ERC1155, IERC2981, IERC1271, Ownable, ReentrancyGuard {
     IFriendtechShares public immutable ft;
 
     uint256 _royaltyFee;
@@ -72,6 +66,14 @@ contract WrappedFT is
 
         (bool success, ) = from.call{value: price}("");
         require(success, "WrappedFT: unable to send funds");
+    }
+
+    function totalSupply(uint256 id) public view virtual returns (uint256) {
+        return ft.sharesSupply(_sharesSubject(id));
+    }
+
+    function exists(uint256 id) public view virtual returns (bool) {
+        return totalSupply(id) > 0;
     }
 
     function royaltyInfo(

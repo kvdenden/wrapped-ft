@@ -9,7 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mantine/core": "^7.0.0",
+    "@mantine/form": "^7.0.0",
+    "@mantine/hooks": "^7.0.0",
     "@rainbow-me/rainbowkit": "^1.0.8",
+    "@tabler/icons-react": "^2.34.0",
+    "immer": "^10.0.2",
     "lodash": "^4.17.21",
     "next": "^13.4.3",
     "react": "^18.2.0",
@@ -23,6 +28,9 @@
     "@types/react": "^18.2.6",
     "eslint": "^8.15.0",
     "eslint-config-next": "^13.4.3",
+    "postcss": "^8.4.30",
+    "postcss-preset-mantine": "^1.7.0",
+    "postcss-simple-vars": "^7.0.1",
     "typescript": "^5.0.4"
   }
 }

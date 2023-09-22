@@ -7,8 +7,8 @@ const getWalletInfo = memoize((address: string) =>
   fetch(`https://prod-api.kosetto.com/users/${address}`).then((res) => res.json())
 );
 
-const tokenImage = (text: string) => {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" style="background-color:#00bafa;"><text fill="white" font-size="72px" font-family="monospace" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">${text}</text></svg>`;
+const tokenImage = (displayName: string, account: string) => {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" style="background-color:#00bafa;"><text fill="white" font-size="72px" font-family="monospace" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">${displayName}</text><text fill="white" font-size="24px" font-family="monospace" x="99%" y="99%" text-anchor="end">${account}</text></svg>`;
   return "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
 };
 
@@ -25,7 +25,7 @@ export async function GET(_request: Request, { params }: { params: { tokenId: st
 
   const metadata = {
     name: displayName,
-    image: tokenImage(displayName),
+    image: tokenImage(displayName, address),
     external_url: twitterUsername && `https://twitter.com/${twitterUsername}`,
   };
 

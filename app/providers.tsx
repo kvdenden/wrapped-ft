@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { MantineProvider } from "@mantine/core";
 import { RainbowKitProvider, getDefaultWallets, connectorsForWallets } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { base, baseGoerli, foundry } from "wagmi/chains";
@@ -46,10 +47,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => setMounted(true), []);
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains} appInfo={appInfo}>
-        {mounted && children}
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <MantineProvider>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains} appInfo={appInfo}>
+          {mounted && children}
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </MantineProvider>
   );
 }
