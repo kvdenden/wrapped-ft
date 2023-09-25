@@ -1,9 +1,12 @@
+"use client";
+
 import { Anchor, AspectRatio, Avatar, Card, Group, Space, Text } from "@mantine/core";
 import { IconBrandTwitter } from "@tabler/icons-react";
 import TokenSupply from "./TokenSupply";
 import TokenPrice from "./TokenPrice";
 import MintForm from "./MintForm";
 import useMetadata from "../_hooks/useMetadata";
+import { getAddress } from "viem";
 
 type TokenProps = {
   tokenId: `0x${string}`;
@@ -15,11 +18,13 @@ const TokenCard = ({ tokenId }: TokenProps) => {
   if (!metadata) return; // TODO: loading state
 
   return (
-    <Card>
-      <AspectRatio ratio={1}>
-        <Avatar src={metadata.image} alt={metadata.name} radius="md" />
-      </AspectRatio>
-      <Group justify="space-between" align="center">
+    <Card shadow="md" withBorder>
+      <Card.Section>
+        <AspectRatio ratio={1}>
+          <Avatar src={metadata.image} alt={metadata.name} radius={0} />
+        </AspectRatio>
+      </Card.Section>
+      <Group justify="space-between" align="center" mt="lg">
         <Text fw="bolder" size="lg">
           {metadata.name}
         </Text>
@@ -30,7 +35,7 @@ const TokenCard = ({ tokenId }: TokenProps) => {
         )}
       </Group>
       <Text size="xs" c="dimmed" truncate>
-        {tokenId}
+        {getAddress(tokenId)}
       </Text>
       <Space h="md" />
       <Group justify="space-between">
@@ -49,8 +54,8 @@ const TokenCard = ({ tokenId }: TokenProps) => {
           </Text>
         </Text>
       </Group>
-      <Space h="md" />
-      <MintForm tokenId={tokenId} />
+      {/* <Space h="md" />
+      <MintForm tokenId={tokenId} /> */}
     </Card>
   );
 };

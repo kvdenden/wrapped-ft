@@ -15,7 +15,6 @@ const useTokenBalances = (account: `0x${string}` | undefined) => {
   const [tokenBalances, setTokenBalances] = useState({} as { [index: `0x${string}`]: bigint });
 
   useEffect(() => {
-    console.log("here");
     let ignore = false;
     setTokenBalances({});
 

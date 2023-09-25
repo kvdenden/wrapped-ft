@@ -21,6 +21,7 @@ contract WrappedFT is ERC1155, IERC2981, IERC1271, Ownable, ReentrancyGuard {
 
     constructor(address ft_) ERC1155("") {
         ft = IFriendtechShares(ft_);
+        ft.buyShares(address(this), 1);
     }
 
     function mintPrice(
