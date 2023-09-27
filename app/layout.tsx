@@ -1,11 +1,16 @@
-import "./globals.css";
 import "@mantine/core/styles.css";
 import "@rainbow-me/rainbowkit/styles.css";
+import "./globals.css";
 
-import Link from "next/link";
-import { Box, ColorSchemeScript, Container, Group, Title } from "@mantine/core";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Box, ColorSchemeScript, Container, Stack, Text } from "@mantine/core";
+import Header from "./_components/Header";
 import { Providers } from "./providers";
+import Footer from "./_components/Footer";
+
+export const metadata = {
+  title: "Wrapped friend.tech",
+  description: "Wrapped friend.tech converts friend.tech keys into ERC1155 tokens.",
+};
 
 function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,21 +20,13 @@ function RootLayout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <Providers>
-          <Box component="header" bg="#00bafa" p="md" mb="md">
-            <Container fluid>
-              <Group>
-                <Link href="/">
-                  <Title c="white" size="h2">
-                    Wrapped FT
-                  </Title>
-                </Link>
-                <Box ml="auto">
-                  <ConnectButton />
-                </Box>
-              </Group>
-            </Container>
-          </Box>
-          <Container fluid>{children}</Container>
+          <Stack gap={0} mih="100vh">
+            <Header />
+            <main>{children}</main>
+            <Box mt="auto" pt="lg">
+              <Footer />
+            </Box>
+          </Stack>
         </Providers>
       </body>
     </html>

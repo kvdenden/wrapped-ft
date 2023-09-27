@@ -17,12 +17,17 @@ import {IFriendtechShares} from "./IFriendtechShares.sol";
 contract WrappedFT is ERC1155, IERC2981, IERC1271, Ownable, ReentrancyGuard {
     IFriendtechShares public immutable ft;
 
-    uint256 _royaltyFee;
+    string public name = "Wrapped FT";
+    string public symbol = "WFT";
+
+    uint256 _royaltyFee = 500;
 
     constructor(address ft_) ERC1155("") {
         ft = IFriendtechShares(ft_);
         ft.buyShares(address(this), 1);
     }
+
+    receive() external payable {}
 
     function mintPrice(
         address sharesSubject,

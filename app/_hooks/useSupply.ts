@@ -5,14 +5,14 @@ import { hexToBigInt } from "viem";
 const useSupply = (tokenId: `0x${string}`) => {
   const ft = useFT();
 
-  const { data } = useContractRead({
+  const supply = useContractRead({
     ...ft,
     functionName: "totalSupply",
     args: [hexToBigInt(tokenId)],
     watch: true,
   });
 
-  return data;
+  return supply;
 };
 
 export default useSupply;

@@ -50,6 +50,7 @@ const useTokenBalances = (account: `0x${string}` | undefined) => {
       const transferSingle = await client.createContractEventFilter({
         ...ft,
         eventName: "TransferSingle",
+        fromBlock: BigInt(0),
         args: {
           to: account,
         },
@@ -59,6 +60,7 @@ const useTokenBalances = (account: `0x${string}` | undefined) => {
       const transferBatch = await client.createContractEventFilter({
         ...ft,
         eventName: "TransferBatch",
+        fromBlock: BigInt(0),
         args: {
           to: account,
         },

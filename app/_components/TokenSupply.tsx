@@ -7,7 +7,7 @@ type TokenProps = {
 };
 
 const TokenSupply = ({ tokenId }: TokenProps) => {
-  const supply = useSupply(tokenId);
+  const { data: supply } = useSupply(tokenId);
 
   return <>{supply?.toLocaleString("en-US")}</>;
 };

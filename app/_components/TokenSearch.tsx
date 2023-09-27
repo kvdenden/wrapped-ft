@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { ActionIcon, Avatar, Box, Combobox, Group, Skeleton, Stack, Text, TextInput, useCombobox } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import { IconArrowRight, IconSearch } from "@tabler/icons-react";
 import useWalletInfo from "../_hooks/useWalletInfo";
 
 type SearchResultProps = {
@@ -11,6 +11,7 @@ type SearchResultProps = {
 };
 
 type SearchProps = {
+  variant?: "default" | "minimal";
   onSelect?: (tokenId: `0x${string}`) => void;
 };
 
@@ -44,15 +45,11 @@ const SearchResultItem = ({ wallet }: SearchResultProps) => {
   );
 };
 
-const TokenSearch = ({ onSelect }: SearchProps) => {
+const TokenSearch = ({ onSelect, variant }: SearchProps) => {
   const combobox = useCombobox();
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
   const [results, setResults] = useState<SearchResult[] | undefined>([]);
-
-  // useEffect(() => {
-  //   combobox.selectFirstOption();
-  // }, [combobox, results]);
 
   const search = useCallback(async (query: string) => {
     setLoading(true);
@@ -66,8 +63,6 @@ const TokenSearch = ({ onSelect }: SearchProps) => {
         res.json()
       );
 
-      console.log("results", results);
-
       setResults(results);
     } catch (e) {
       console.error(e);
@@ -78,7 +73,11 @@ const TokenSearch = ({ onSelect }: SearchProps) => {
 
   const searchResultOptions = results
     ? results
-        .filter((result) => result.username.includes(value.toLowerCase()))
+        .filter(
+          (result) =>
+            result.username.toLowerCase().includes(value.toLowerCase()) ||
+            result.wallet.toLowerCase().includes(value.toLowerCase())
+        )
         .slice(0, 5) // TODO: sort by levenshtein distance to query?
         .map((result) => (
           <Combobox.Option value={result.wallet} key={result.wallet}>
@@ -87,12 +86,29 @@ const TokenSearch = ({ onSelect }: SearchProps) => {
         ))
     : [];
 
+  const inputProps =
+    variant === "minimal"
+      ? {
+          size: "sm",
+          leftSection: <IconSearch />,
+        }
+      : {
+          size: "md",
+          radius: "xl",
+          leftSection: <IconSearch />,
+          rightSectionWidth: 42,
+          rightSection: (
+            <ActionIcon type="submit" size={32} radius="xl" variant="filled" loading={loading}>
+              <IconArrowRight fontSize="sm" stroke={1.5} />
+            </ActionIcon>
+          ),
+        };
+
   return (
     <>
       <Combobox
         onOptionSubmit={(option) => {
           onSelect && onSelect(option as `0x${string}`);
-          // setValue(option);
           combobox.closeDropdown();
         }}
         store={combobox}
@@ -104,27 +120,21 @@ const TokenSearch = ({ onSelect }: SearchProps) => {
               console.log("submit", value);
               search(value).then(() => {
                 combobox.openDropdown();
-                // combobox.selectFirstOption();
               });
               e.preventDefault();
             }}
           >
-            {/* TODO: submit form using enter when dropdown  */}
             <TextInput
               value={value}
               onChange={(e) => {
                 setValue(e.currentTarget.value);
                 combobox.resetSelectedOption();
               }}
-              radius="xl"
-              size="md"
-              placeholder="Search"
-              rightSectionWidth={42}
-              rightSection={
-                <ActionIcon type="submit" size={32} radius="xl" variant="filled" loading={loading}>
-                  <IconSearch fontSize="sm" stroke={1.5} />
-                </ActionIcon>
-              }
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && combobox.dropdownOpened) search(value);
+              }}
+              placeholder="Search by twitter handle or wallet address"
+              {...inputProps}
             />
           </form>
         </Combobox.Target>

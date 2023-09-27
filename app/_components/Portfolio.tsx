@@ -3,44 +3,41 @@
 import _ from "lodash";
 import { useMemo } from "react";
 
+import { Alert, Avatar, Box, Group, Table, Text, Title } from "@mantine/core";
 import Link from "next/link";
-import { Avatar, Group, Table, Text, Title } from "@mantine/core";
-import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
-import useMetadata from "../_hooks/useMetadata";
 import useTokenBalances from "../_hooks/useTokenBalances";
+import useWalletInfo from "../_hooks/useWalletInfo";
 import TokenPrice from "./TokenPrice";
 import TokenSupply from "./TokenSupply";
 
-// TODO: don't use table, make sure I can click on entire row
-
 const PortfolioItem = ({ tokenId, balance }: { tokenId: `0x${string}`; balance: bigint }) => {
-  const metadata = useMetadata(tokenId);
-  // const walletInfo = useWalletInfo(tokenId);
+  // const metadata = useMetadata(tokenId);
+  const walletInfo = useWalletInfo(tokenId);
 
-  if (!metadata) return null;
-  // if(!walletInfo) return null;
+  // if (!metadata) return null;
+  if (!walletInfo) return null;
 
   return (
     <Table.Tr>
       <Table.Td>
         <Link href={`/keys/${tokenId}`}>
           <Group>
-            <Avatar src={metadata.image} alt={metadata.name} />
+            <Avatar src={walletInfo.twitterPfpUrl} alt={walletInfo.twitterName} />
             <div>
               <Text size="lg" fw="bold" title={tokenId}>
-                {metadata.name}
+                {walletInfo.twitterUsername}
               </Text>
 
               <Text size="xs">
-                {balance.toString()} / <TokenSupply tokenId={tokenId} /> {balance > 1 ? "keys" : "key"}
+                {balance.toString()} / <TokenSupply tokenId={tokenId} /> keys
               </Text>
             </div>
+            <Box ml="auto">
+              <TokenPrice tokenId={tokenId} />
+            </Box>
           </Group>
         </Link>
-      </Table.Td>
-      <Table.Td>
-        <TokenPrice tokenId={tokenId} />
       </Table.Td>
     </Table.Tr>
   );
@@ -53,20 +50,20 @@ const Portfolio = () => {
 
   return (
     <>
-      <Title size="h3">Your keys</Title>
-      <Table highlightOnHover>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th></Table.Th>
-            <Table.Th>Price</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {tokenIds.map((tokenId) => (
-            <PortfolioItem key={tokenId} tokenId={tokenId} balance={tokenBalances[tokenId]} />
-          ))}
-        </Table.Tbody>
-      </Table>
+      <Title order={2} my="lg">
+        Your holdings
+      </Title>
+      {tokenIds.length === 0 ? (
+        <Alert color="gray">You don&apos;t have any keys yet.</Alert>
+      ) : (
+        <Table highlightOnHover striped>
+          <Table.Tbody>
+            {tokenIds.map((tokenId) => (
+              <PortfolioItem key={tokenId} tokenId={tokenId} balance={tokenBalances[tokenId]} />
+            ))}
+          </Table.Tbody>
+        </Table>
+      )}
     </>
   );
 };

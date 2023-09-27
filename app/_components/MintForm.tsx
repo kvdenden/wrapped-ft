@@ -1,7 +1,8 @@
 "use client";
 
-import { Button, Group, NumberInput, Paper, Stack, Text } from "@mantine/core";
 import { useState } from "react";
+import { Alert, Button, Grid, NumberInput, Space, Stack, Text, Title } from "@mantine/core";
+import { IconInfoCircle } from "@tabler/icons-react";
 import {
   useAccount,
   useBalance,
@@ -32,8 +33,6 @@ const MintForm = ({ tokenId }: TokenProps) => {
     watch: true,
   });
 
-  // console.log("mintPrice", mintPrice);
-
   const prepareMint = usePrepareContractWrite({
     ...ft,
     functionName: "mint",
@@ -45,19 +44,33 @@ const MintForm = ({ tokenId }: TokenProps) => {
   const tx = useWaitForTransaction({ hash: mint.data?.hash });
 
   return (
-    // <Paper>
     <>
       <Stack gap="xs">
-        <NumberInput label="Amount" value={amount} onChange={setAmount} min={1} allowDecimal={false} />
-        <Text size="sm" c="dimmed">
-          Total price <>{mintPrice.data && <Price value={mintPrice.data} />}</>
-        </Text>
-        <Button onClick={mint.write} loading={tx.isLoading} disabled={prepareMint.isError} size="lg">
+        {!!mintPrice.data && !!balance.data && mintPrice.data > balance.data.value && (
+          <Alert title="Insufficient funds" color="red" icon={<IconInfoCircle />}>
+            Total price exceeds the balance of your account.
+          </Alert>
+        )}
+        <Grid>
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <Text size="sm" fw={500} span>
+              Total price
+            </Text>
+            <Title order={4} size="h2" fw="bold">
+              <Space />
+              <>{mintPrice.data && <Price value={mintPrice.data} />}</>
+            </Title>
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <NumberInput label="Amount" value={amount} onChange={setAmount} min={1} allowDecimal={false} />
+          </Grid.Col>
+        </Grid>
+        <Space />
+        <Button onClick={mint.write} loading={tx.isLoading} disabled={!prepareMint.isSuccess} size="lg">
           Buy now
         </Button>
       </Stack>
     </>
-    // </Paper>
   );
 };
 
