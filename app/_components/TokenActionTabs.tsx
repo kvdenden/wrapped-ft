@@ -56,7 +56,7 @@ const TokenActionTabs = ({ tokenId }: TokenProps) => {
         <Group gap="xs" justify="flex-end">
           <IconUserCircle />
           <Text size="sm">
-            You own {tokenBalance?.toString()} {tokenBalance === BigInt(1) ? "key" : "keys"}
+            You own {tokenBalance?.toString() ?? 0} {tokenBalance === BigInt(1) ? "key" : "keys"}
           </Text>
         </Group>
         <Space h="md" />
