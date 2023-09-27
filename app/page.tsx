@@ -8,9 +8,9 @@ function Page() {
       <Center mih={500} bg="blue.8">
         <Container size="xs">
           <Box c="white">
-            <Title size="3em">Wrapped friend.tech</Title>
+            <Title size="3em">Wrapped FriendTech</Title>
             <Text size="lg">
-              Wrapped friend.tech converts friend.tech keys into ERC1155 tokens. Wrapping keys into a standard interface
+              Wrapped FriendTech converts friend.tech keys into ERC1155 tokens. Wrapping keys into a standard interface
               makes them compatible with existing NFT tooling and infrastructure.
             </Text>
           </Box>

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 
 import memoize from "lodash/memoize";
-import { getAddress, numberToHex } from "viem";
+import { createPublicClient, getAddress, http, numberToHex } from "viem";
+import { mainnet } from "viem/chains";
 
 const getWalletInfo = memoize((address: string) =>
   fetch(`https://prod-api.kosetto.com/users/${address}`).then((res) => res.json())
@@ -20,8 +21,11 @@ export async function GET(_request: Request, { params }: { params: { tokenId: st
   const address = getAddress(numberToHex(BigInt(`0x${tokenId}`), { size: 20 })); // convert tokenId to address
   const walletInfo = await getWalletInfo(address);
 
+  const client = createPublicClient({ chain: mainnet, transport: http() });
+  const ensName = await client.getEnsName({ address });
+
   const { twitterUsername } = walletInfo;
-  const displayName = twitterUsername ?? shortAccount(address);
+  const displayName = twitterUsername ?? ensName ?? shortAccount(address);
 
   const metadata = {
     name: displayName,

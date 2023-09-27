@@ -23,7 +23,7 @@ const Header = () => {
           </Box>
           <Group>
             <Anchor
-              href={process.env.NEXT_PUBLIC_OPENSEA_COLLECTION_URI}
+              href={process.env.NEXT_PUBLIC_OPENSEA_COLLECTION_URL}
               target="_blank"
               rel="noreferrer"
               display="flex"
@@ -32,7 +32,7 @@ const Header = () => {
             </Anchor>
           </Group>
           <Box>
-            <ConnectButton showBalance={false} accountStatus="address" chainStatus="none" />
+            <ConnectButton showBalance={false} accountStatus="address" />
           </Box>
         </Group>
       </Container>

@@ -8,8 +8,8 @@ import { Providers } from "./providers";
 import Footer from "./_components/Footer";
 
 export const metadata = {
-  title: "Wrapped friend.tech",
-  description: "Wrapped friend.tech converts friend.tech keys into ERC1155 tokens.",
+  title: "Wrapped FriendTech",
+  description: "Wrapped FriendTech converts friend.tech keys into ERC1155 tokens.",
 };
 
 function RootLayout({ children }: { children: React.ReactNode }) {
