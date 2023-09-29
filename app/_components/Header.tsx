@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <Box component="header" bg="#00bafa" p="md">
       <Container fluid>
-        <Group wrap="nowrap">
+        <Group>
           <Link href="/">
             <Title c="white" size="h3">
               wrappedfriend.tech

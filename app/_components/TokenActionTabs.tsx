@@ -60,6 +60,12 @@ const TokenActionTabs = ({ tokenId }: TokenProps) => {
           </Text>
         </Group>
         <Space h="md" />
+        {!account.isConnected && (
+          <Alert title="Not connected" color="yellow" icon={<IconInfoCircle />} my="md">
+            Please connect your wallet to buy or sell keys.
+          </Alert>
+        )}
+
         {action === "mint" ? (
           <>
             <MintForm tokenId={tokenId} />
