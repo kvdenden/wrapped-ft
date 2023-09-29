@@ -5,8 +5,11 @@ import { Anchor, Box, Container, Group, Title } from "@mantine/core";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import SearchContainer from "./SearchContainer";
 import OpenSeaIcon from "../_icons/OpenSeaIcon";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
+  const path = usePathname();
+
   return (
     <Box component="header" bg="#00bafa" p="md">
       <Container fluid>
@@ -17,9 +20,11 @@ const Header = () => {
             </Title>
           </Link>
           <Box ml="auto" maw="30em" style={{ flexGrow: 1 }}>
-            <Box visibleFrom="sm">
-              <SearchContainer variant="minimal" />
-            </Box>
+            {path !== "/" && (
+              <Box visibleFrom="sm">
+                <SearchContainer variant="minimal" />
+              </Box>
+            )}
           </Box>
           <Group>
             <Anchor
